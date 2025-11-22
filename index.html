@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Experience</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            color: #333;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0a0a0a);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+            }
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 50px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: #d4af37;
+            font-weight: 700;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero-content {
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 100px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+        
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 100px 50px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0.3));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .luxury-button {
+            display: inline-block;
+            padding: 15px 50px;
+            background: linear-gradient(45deg, #d4af37, #f4e4c1);
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .luxury-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .luxury-button:hover::before {
+            left: 100%;
+        }
+        
+        .luxury-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+        
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            margin: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .contact-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .contact-item h3 {
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            nav {
+                padding: 15px 20px;
+            }
+            
+            .services, .cta, .contact {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <script>
+        // Create floating particles
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            particle.innerHTML = '✦';
+            particle.style.color = '#d4af37';
+            document.body.appendChild(particle);
+        }
+    </script>
+    
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">LUXE</div>
+            <div class="nav-links">
+                <span style="color: #d4af37;">Experience Luxury</span>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Luxury</h1>
+            <p>Experience the finest in elegance and sophistication</p>
+            <a href="#services" class="luxury-button">Discover More</a>
+        </div>
+    </section>
+    
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Exclusive Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">♛</div>
+                    <h3>Royal Treatment</h3>
+                    <p>Indulge in unparalleled luxury with our premium services designed for the discerning individual.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✿</div>
+                    <h3>Exquisite Design</h3>
+                    <p>Every detail meticulously crafted to perfection, creating an atmosphere of pure sophistication.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">♦</div>
+                    <h3>Premium Quality</h3>
+                    <p>Experience the highest standards of excellence in every aspect of our service delivery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <h2>Ready to Experience Luxury?</h2>
+        <a href="#contact" class="luxury-button">Get Started Today</a>
+    </section>
+    
+    <section class="contact" id="contact">
+        <div class="contact-content">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Visit Us</h3>
+                    <p>123 Luxury Avenue<br>Elite District, ED 12345</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Call Us</h3>
+                    <p>+1 (555) 123-4567<br>Mon-Sun: 9AM-9PM</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Email Us</h3>
+                    <p>info@luxexperience.com<br>We reply within 24 hours</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements
+        document.querySelectorAll('.section-title, .service-card, .contact-item').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
